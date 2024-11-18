@@ -11,9 +11,9 @@ import CoreLocation
 
 struct LandingView: View {
   
-  @State var mapController = MapController()
-  let locationController = LocationController()
-  let weatherController = WeatherController()
+  @Environment(LocationController.self) private var locationController
+  @Environment(WeatherController.self) private var weatherController
+  @Environment(MapController.self) private var mapController
   
   @State private var showAddNewWeatherItemView = false
   
@@ -23,14 +23,12 @@ struct LandingView: View {
   
   var body: some View {
     ZStack{
-        // Background
       Rectangle()
         .fill(LinearGradient(colors: [.blue, .cyan.opacity(0)], startPoint: .bottom, endPoint: .top))
         .ignoresSafeArea()
-        //
-      if self.weather != nil {
+      if self.weather != nil && locationController.userLocation != nil {
         VStack {
-          WeatherLocation(weather: self.weather!)
+          WeatherLocation(weather: self.weather!, location: locationController.userLocation!)
           Spacer()
         }
         .frame(width: 375)
@@ -45,17 +43,16 @@ struct LandingView: View {
           }
         }
       }
-      
     }
     .sheet(isPresented: self.$showAddNewWeatherItemView, content: {
-      SearchAdressView(weatherController: self.weatherController, mapController: self.$mapController)
+      SearchAdressView()
     })
     .onAppear{
-      self.locationController.requestLocation()
+      locationController.requestLocation()
     }
-    .onChange(of: self.locationController.userLocation) {
+    .onChange(of: locationController.userLocation) {
       Task {
-        if let userLocation = self.locationController.userLocation {
+        if let userLocation = locationController.userLocation {
           self.weather = await weatherController.fetchWeather(to: userLocation)
         } else {
           print("User location not found")
@@ -66,5 +63,11 @@ struct LandingView: View {
 }
 
 #Preview {
+  @Previewable @State var locationController = LocationController()
+  @Previewable @State var mapController = MapController()
+  @Previewable @State var weatherController = WeatherController()
   LandingView()
+    .environment(locationController)
+    .environment(mapController)
+    .environment(weatherController)
 }
