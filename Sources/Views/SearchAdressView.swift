@@ -12,36 +12,44 @@ import MapKit
 
 struct SearchAdressView: View {
   
-  let weatherController: WeatherController
-  @Binding var mapController: MapController
+  @Environment(LocationController.self) private var locationController
+  @Environment(WeatherController.self) private var weatherController
+  @Environment(MapController.self) private var mapController
+  
+  @State var query: String = ""
   
   var body: some View {
     NavigationStack{
       VStack{
-        TextField("Search an adress", text: self.$mapController.query)
+        TextField("Search an adress", text: self.$query)
           .padding()
           .background(
             RoundedRectangle(cornerRadius: 10)
               .stroke(.gray, lineWidth: 3)
           )
         ScrollView{
-          ForEach(self.mapController.localSearchCompletion, id: \.title) { result in
+          ForEach(mapController.localSearchCompletion, id: \.title) { result in
             NavigationLink {
-              WeatherView(weatherController: self.weatherController,mapController: self.mapController, completion: result)
+              WeatherView(completion: result)
             } label: {
               HStack{
                 Text(result.title + " " + result.subtitle)
+                  .foregroundStyle(.black)
                 Spacer()
               }
               .padding()
-              Divider()
-                .foregroundStyle(.gray)
+              .multilineTextAlignment(.leading)
             }
+            Divider()
+              .foregroundStyle(.gray)
           }
         }
         Spacer()
       }
       .padding()
+      .onChange(of: self.query) {
+        mapController.query = self.query
+      }
     }
   }
 }
