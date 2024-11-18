@@ -12,25 +12,34 @@ import MapKit
 
 struct WeatherView: View {
   
-  let weatherController: WeatherController
-  let mapController: MapController
+  @Environment(LocationController.self) private var locationController
+  @Environment(WeatherController.self) private var weatherController
+  @Environment(MapController.self) private var mapController
+  
   let completion: MKLocalSearchCompletion
   
   @State var location: CLLocation? = nil
   @State var weather: Weather? = nil
   
     var body: some View {
-      VStack{
-        if self.weather != nil {
-          Text("\(self.weather!.currentWeather.apparentTemperature.value)")
+      ZStack{
+        if self.weather != nil && self.location != nil {
+          Rectangle()
+            .fill(self.weather!.currentWeather.getColorGradientFromTemperatureInVertical())
+            .ignoresSafeArea()
+          VStack{
+            WeatherLocation(weather: self.weather!, location: self.location!)
+            Spacer()
+          }
         } else {
-          Text("error")
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
         }
       }
       .task {
-        self.location = await self.mapController.convertToCLLocation(self.completion)
+        self.location = await mapController.convertToCLLocation(self.completion)
         if self.location != nil {
-          self.weather = await self.weatherController.fetchWeather(to: self.location!)
+          self.weather = await weatherController.fetchWeather(to: self.location!)
         }
       }
     }
