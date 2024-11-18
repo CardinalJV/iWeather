@@ -10,9 +10,12 @@ import CoreLocation
 
 @Observable
 final class LocationController: NSObject, CLLocationManagerDelegate {
+  
   @ObservationIgnored private let locationManager = CLLocationManager()
+  
   var userLocation: CLLocation?
-  var permissionDenied: Bool = false
+  
+  @ObservationIgnored private var permissionDenied: Bool = false
   
   override init() {
     super.init()
