@@ -11,10 +11,11 @@ import SwiftUI
 
 @Observable
 final class MapController {
-  @ObservationIgnored private let localSearchCompleter = MKLocalSearchCompleter()
+  
+  @ObservationIgnored private var localSearchCompleter = MKLocalSearchCompleter()
   
   var query: String = "" {
-    didSet {
+    didSet{
       self.localSearchCompleter.queryFragment = query
     }
   }
@@ -26,11 +27,9 @@ final class MapController {
   }
   
   private func setupSearchCompleter() {
-      // Configure the searchCompleter
     self.localSearchCompleter.resultTypes = .address
     self.localSearchCompleter.region = MKCoordinateRegion(.world)
     
-      // Periodically check for changes in `searchCompleter.results`
     DispatchQueue.main.async {
       self.observeResults()
     }
@@ -47,7 +46,6 @@ final class MapController {
   func convertToCLLocation(_ completion: MKLocalSearchCompletion) async -> CLLocation? {
     let searchRequest = MKLocalSearch.Request(completion: completion)
     let search = MKLocalSearch(request: searchRequest)
-    
     do {
       let response = try await search.start()
       if let coordinate = response.mapItems.first?.placemark.coordinate {
@@ -57,5 +55,17 @@ final class MapController {
       print("Error during search: \(error.localizedDescription)")
     }
     return nil
+  }
+  
+  func convertToCLPlacemark(_ location: CLLocation) async -> CLPlacemark? {
+    let geocoder = CLGeocoder()
+    do {
+      let localSearch = try await geocoder.reverseGeocodeLocation(location)
+      let placemark = localSearch.first
+      return placemark
+    } catch {
+      print("Error during conversions: \(error.localizedDescription)")
+      return nil
+    }
   }
 }
