@@ -20,7 +20,7 @@ final class MapController {
     }
   }
   
-  var localSearchCompletion: [MKLocalSearchCompletion] = []
+  var localSearchCompletions: [MKLocalSearchCompletion] = []
   
   init() {
     setupSearchCompleter()
@@ -37,8 +37,8 @@ final class MapController {
   
   private func observeResults() {
     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-      if self.localSearchCompleter.results != self.localSearchCompletion {
-        self.localSearchCompletion = self.localSearchCompleter.results
+      if self.localSearchCompleter.results != self.localSearchCompletions {
+        self.localSearchCompletions = self.localSearchCompleter.results
       }
     }
   }
