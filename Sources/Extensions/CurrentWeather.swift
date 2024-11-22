@@ -15,8 +15,7 @@ extension CurrentWeather {
       case .clear: return "☀️"
       case .mostlyClear: return "🌤️"
       case .partlyCloudy: return "⛅"
-      case .mostlyCloudy: return "🌥️"
-      case .cloudy, .blizzard: return "☁️"
+      case .cloudy, .blizzard, .mostlyCloudy: return "☁️"
       case .windy: return "💨"
       case .smoky, .haze: return "🌫️"
       case .drizzle: return "🌦️"
@@ -31,21 +30,43 @@ extension CurrentWeather {
   
   func getColorGradientFromTemperatureInHorizontal() -> LinearGradient {
     switch temperature.value {
-      case ..<10 : return LinearGradient(colors: [.gray, Color(.systemGray6)], startPoint: .leading, endPoint: .trailing)
-      case 10...30 : return LinearGradient(colors: [.blue, .cyan.opacity(0)], startPoint: .leading, endPoint: .trailing)
-      case 30...40 : return LinearGradient(colors: [.yellow, .yellow.opacity(1)], startPoint: .leading, endPoint: .trailing)
-      case 40... : return LinearGradient(colors: [.red, .red.opacity(0.75)], startPoint: .leading, endPoint: .trailing)
+      case ..<10 : return LinearGradient(colors: [.gray, .white], startPoint: .leading, endPoint: .trailing)
+      case 10...30 : return LinearGradient(colors: [.blue, .white], startPoint: .leading, endPoint: .trailing)
+      case 30...40 : return LinearGradient(colors: [.yellow, .white], startPoint: .leading, endPoint: .trailing)
+      case 40... : return LinearGradient(colors: [.red, .white], startPoint: .leading, endPoint: .trailing)
       default: return LinearGradient(colors: [.white, .white], startPoint: .leading, endPoint: .trailing)
     }
   }
   
   func getColorGradientFromTemperatureInVertical() -> LinearGradient {
     switch temperature.value {
-      case ..<10 : return LinearGradient(colors: [.gray, Color(.systemGray6)], startPoint: .bottom, endPoint: .top)
-      case 10...30 : return LinearGradient(colors: [.blue, .cyan.opacity(0)], startPoint: .bottom, endPoint: .top)
-      case 30...40 : return LinearGradient(colors: [.yellow, .yellow.opacity(1)], startPoint: .bottom, endPoint: .top)
-      case 40... : return LinearGradient(colors: [.red, .red.opacity(0.75)], startPoint: .bottom, endPoint: .top)
+      case ..<10 : return LinearGradient(colors: [.gray, .white], startPoint: .bottom, endPoint: .top)
+      case 10...30 : return LinearGradient(colors: [.blue, .white], startPoint: .bottom, endPoint: .top)
+      case 30...40 : return LinearGradient(colors: [.yellow, .white], startPoint: .bottom, endPoint: .top)
+      case 40... : return LinearGradient(colors: [.red, .white], startPoint: .bottom, endPoint: .top)
       default: return LinearGradient(colors: [.white, .white], startPoint: .bottom, endPoint: .top)
     }
+  }
+  
+  func getFontColorFromTemperature() -> Color {
+    switch self.temperature.value {
+      case ..<10 : return .gray
+      case 10...30 : return .blue
+      case 30...40 : return .yellow
+      case 40... : return .red
+      default: return .black
+    }
+  }
+  
+  func getRoundedApparentTemperature() -> String {
+    return "\(String(format: "%.0f", self.apparentTemperature.value))°"
+  }
+  
+  func getRoundedWindSpeed() -> String {
+    return "\(String(format: "%.0f", self.wind.speed.value))"
+  }
+  
+  func getRoundedHumidityRate() -> String {
+    return "\(String(format: "%.0f", self.humidity))"
   }
 }
