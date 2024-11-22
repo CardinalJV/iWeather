@@ -6,6 +6,7 @@
   //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct iWeatherApp: App {
@@ -13,6 +14,7 @@ struct iWeatherApp: App {
   @State private var weatherController = WeatherController()
   @State private var locationController = LocationController()
   @State private var mapController = MapController()
+  @State private var dataController = DataController()
   
   var body: some Scene {
     WindowGroup {
@@ -20,6 +22,8 @@ struct iWeatherApp: App {
         .environment(weatherController)
         .environment(locationController)
         .environment(mapController)
+        .environment(dataController)
     }
+    .modelContainer(for: DataModel.self)
   }
 }
