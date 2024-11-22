@@ -11,16 +11,18 @@ import WeatherKit
 import MapKit
 
 struct SearchAdressView: View {
-  
+// MARK: - @Environment variables
   @Environment(LocationController.self) private var locationController
   @Environment(WeatherController.self) private var weatherController
   @Environment(MapController.self) private var mapController
-  
-  @State var query: String = ""
-  
+// MARK: - @State variables
+  @State private var query: String = ""
+// MARK: - Body
   var body: some View {
     NavigationStack{
       VStack{
+        RoundedRectangle(cornerRadius: 5)
+          .frame(width: 50, height: 5)
         TextField("Search an adress", text: self.$query)
           .padding()
           .background(
@@ -28,7 +30,7 @@ struct SearchAdressView: View {
               .stroke(.gray, lineWidth: 3)
           )
         ScrollView{
-          ForEach(mapController.localSearchCompletion, id: \.title) { result in
+          ForEach(mapController.localSearchCompletions, id: \.title) { result in
             NavigationLink {
               WeatherView(completion: result)
             } label: {
@@ -47,6 +49,7 @@ struct SearchAdressView: View {
         Spacer()
       }
       .padding()
+      .ignoresSafeArea()
       .onChange(of: self.query) {
         mapController.query = self.query
       }
