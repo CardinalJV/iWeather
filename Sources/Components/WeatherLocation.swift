@@ -19,27 +19,30 @@ struct WeatherLocation: View {
   @State var placemark: CLPlacemark? = nil
   
   var body: some View {
-    VStack{
-      if self.weather != nil {
-        if self.placemark != nil {
-          Text(self.placemark!.locality!)
-            .font(.title)
-            .bold()
-        }
-        Text("\(self.weather!.currentWeather.getIconFromCondition())")
-          .font(.system(size: 125))
-          .shadow(color: .black.opacity(0.5), radius: 50)
-        Text("\(String(format: "%.0f", self.weather!.currentWeather.apparentTemperature.value))°")
-          .font(.title2)
-          .bold()
-        Text(self.weather!.currentWeather.condition.description)
-          .font(.title2)
-          .frame(width: 375)
-          .task {
-            if self.location != nil {
-              self.placemark = await mapController.convertToCLPlacemark(self.location!)
-            }
+    ZStack{
+      if let weather = self.weather {
+        VStack{
+          if let locality = self.placemark?.locality {
+            Text(locality)
+              .font(.title)
+              .bold()
           }
+          Text("\(weather.currentWeather.getIconFromCondition())")
+            .font(.system(size: 125))
+            .shadow(color: .black.opacity(0.5), radius: 25)
+          Text(weather.currentWeather.getRoundedApparentTemperature())
+            .font(.title2)
+            .bold()
+          Text(weather.currentWeather.condition.description)
+            .font(.title2)
+            .frame(width: 375)
+            .task {
+              if let location = self.location {
+                self.placemark = await mapController.convertToCLPlacemark(location)
+              }
+            }
+        }
+        .animation(.bouncy, value: self.weather)
       } else {
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
