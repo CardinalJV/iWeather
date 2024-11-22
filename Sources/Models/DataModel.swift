@@ -16,7 +16,7 @@ final class DataModel: Identifiable {
   var latitude: Double
   var longitude: Double
   
-  init(city: String, location: CLLocation, latitude: Double, longitude: Double) {
+  init(city: String, latitude: Double, longitude: Double) {
     self.city = city
     self.latitude = latitude
     self.longitude = longitude
