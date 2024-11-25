@@ -20,9 +20,13 @@ extension DayWeather {
       case .rain, .heavyRain: return "cloud.heavyrain.fill"
       case .snow, .heavySnow: return "cloud.snow.fill"
       case .freezingDrizzle, .freezingRain: return "snowflake"
-      case .tropicalStorm, .hurricane: return "tornado"
+      case .tropicalStorm, .hurricane, .thunderstorms: return "tornado"
       case .hot: return "thermometer.high"
       default: return "❓"
     }
+  }
+  
+  func getDayFromForecast() -> Int {
+    return Calendar.current.component(.day, from: self.date)
   }
 }
