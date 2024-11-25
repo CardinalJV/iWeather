@@ -56,6 +56,7 @@ struct WeatherView: View {
           .padding()
           ScrollView{
             WeatherLocation(weather: weather, location: location)
+            WeatherForecast(weather: weather)
             Spacer()
           }
         }
