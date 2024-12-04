@@ -11,18 +11,24 @@ import WeatherKit
 import MapKit
 
 struct SearchAdressView: View {
-// MARK: - @Environment variables
+    // MARK: - @Environment variables
   @Environment(LocationController.self) private var locationController
   @Environment(WeatherController.self) private var weatherController
   @Environment(MapController.self) private var mapController
-// MARK: - @State variables
+  @Environment(\.dismiss) private var dismiss
+    // MARK: - @State variables
   @State private var query: String = ""
-// MARK: - Body
+    // MARK: - Body
   var body: some View {
     NavigationStack{
       VStack{
-        RoundedRectangle(cornerRadius: 5)
-          .frame(width: 50, height: 5)
+        Button {
+          dismiss()
+        } label: {
+          RoundedRectangle(cornerRadius: 5)
+            .frame(width: 50, height: 5)
+            .foregroundStyle(.gray)
+        }
         TextField("Search an adress", text: self.$query)
           .padding()
           .background(
