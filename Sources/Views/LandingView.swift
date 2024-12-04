@@ -22,19 +22,20 @@ struct LandingView: View {
   @State private var showAnimation = false
 // MARK: - Body
   var body: some View {
-    NavigationStack {
+    NavigationStack{
       ZStack{
-        if let weather = self.weather, let userLocation = locationController.userLocation {
+        if self.showAnimation, let weather = self.weather {
           Rectangle()
             .fill(weather.currentWeather.getColorGradientFromTemperatureInVertical())
             .ignoresSafeArea()
           VStack {
             NavigationLink {
-              WeatherView(location: userLocation, weather: weather)
+              WeatherView(weather: weather)
             } label: {
-              WeatherLocation(weather: weather, location: userLocation)
+              WeatherLocation(weather: weather)
                 .foregroundStyle(.black)
             }
+            .transition(.scale)
             Spacer()
             WeatherDataList()
             Spacer()
@@ -57,10 +58,12 @@ struct LandingView: View {
         SearchAdressView()
       })
       .onAppear{
+        withAnimation(.smooth.delay(1)){
+          self.showAnimation = true
+        }
         locationController.requestLocation()
         dataController.context = self.context
         dataController.fetchData()
-        self.showAnimation.toggle()
       }
       .onChange(of: locationController.userLocation) {
         Task {
