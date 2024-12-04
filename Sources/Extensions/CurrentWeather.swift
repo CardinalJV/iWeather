@@ -11,7 +11,7 @@ import SwiftUI
 
 extension CurrentWeather {
   func getIconFromCondition() -> String {
-    switch condition {
+    switch self.condition {
       case .clear: return "☀️"
       case .mostlyClear: return "🌤️"
       case .partlyCloudy: return "⛅"
@@ -29,7 +29,7 @@ extension CurrentWeather {
   }
   
   func getColorGradientFromTemperatureInHorizontal() -> LinearGradient {
-    switch temperature.value {
+    switch self.temperature.value {
       case ..<10 : return LinearGradient(colors: [.gray, .white], startPoint: .leading, endPoint: .trailing)
       case 10...30 : return LinearGradient(colors: [.blue, .white], startPoint: .leading, endPoint: .trailing)
       case 30...40 : return LinearGradient(colors: [.yellow, .white], startPoint: .leading, endPoint: .trailing)
@@ -39,7 +39,7 @@ extension CurrentWeather {
   }
   
   func getColorGradientFromTemperatureInVertical() -> LinearGradient {
-    switch temperature.value {
+    switch self.temperature.value {
       case ..<10 : return LinearGradient(colors: [.gray, .white], startPoint: .bottom, endPoint: .top)
       case 10...30 : return LinearGradient(colors: [.blue, .white], startPoint: .bottom, endPoint: .top)
       case 30...40 : return LinearGradient(colors: [.yellow, .white], startPoint: .bottom, endPoint: .top)
@@ -59,14 +59,10 @@ extension CurrentWeather {
   }
   
   func getRoundedApparentTemperature() -> String {
-    return "\(String(format: "%.0f", self.apparentTemperature.value))°"
-  }
-  
-  func getRoundedWindSpeed() -> String {
-    return "\(String(format: "%.0f", self.wind.speed.value))"
+    return String(format: "%.0f", self.apparentTemperature.value)
   }
   
   func getRoundedHumidityRate() -> String {
-    return "\(String(format: "%.0f", self.humidity))"
+    return String(format: "%.0f", self.humidity)
   }
 }
