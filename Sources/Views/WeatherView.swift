@@ -11,37 +11,35 @@ import WeatherKit
 import MapKit
 
 struct WeatherView: View {
-// MARK: - @Environment variables
+    // MARK: - @Environment variables
   @Environment(LocationController.self) private var locationController
   @Environment(WeatherController.self) private var weatherController
   @Environment(MapController.self) private var mapController
   @Environment(DataController.self) private var dataController
   @Environment(\.dismiss) private var dismiss
-// MARK: - @State variables
+    // MARK: - @State variables
   @State var completion: MKLocalSearchCompletion? = nil
-  @State var location: CLLocation? = nil
-  @State var weather: Weather? = nil
   @State var data: DataModel? = nil
-  @State var placemark: CLPlacemark? = nil
-// MARK: - Body
+  @State var weather: Weather? = nil
+    // MARK: - Body
   var body: some View {
     ZStack{
-      if let weather = self.weather, let location = self.location {
+      if let weather = self.weather {
         Rectangle()
           .fill(weather.currentWeather.getColorGradientFromTemperatureInVertical())
           .ignoresSafeArea()
-        VStack{
+      }
+      VStack{
+        if let weather = self.weather {
+          /* Toolbar custom */
           HStack{
             Button(action: {
               dismiss()
             }) {
-              HStack {
-                Image(systemName: "chevron.left")
-                Text("Back")
-              }
-              .foregroundStyle(.black)
-              .font(.title3)
-              .bold()
+              Text("Back")
+                .foregroundStyle(.black)
+                .font(.title3)
+                .bold()
             }
             Spacer()
             if let data = self.data {
@@ -54,30 +52,35 @@ struct WeatherView: View {
             }
           }
           .padding()
+          .background(.clear)
+          /* - */
           ScrollView{
-            WeatherLocation(weather: weather, location: location)
-            WeatherForecast(weather: weather)
-            Spacer()
+            VStack(spacing: 25){
+              WeatherLocation(weather: weather)
+              WeatherForecast(weather: weather)
+              Spacer()
+            }
           }
+          .scrollIndicators(.hidden)
+        } else {
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle() )
         }
-      } else {
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle() )
       }
     }
     .task {
+        // Completion provided by SearchAdressView
       if let completion = self.completion {
-        self.location = await mapController.convertToCLLocation(completion)
-      }
-      if let location = self.location  {
-        self.weather = await weatherController.fetchWeather(to: location)
-        self.placemark = await mapController.convertToCLPlacemark(location)
-        self.data = DataModel(city: self.placemark!.locality!, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-      } else {
-        if let data = self.data {
-          self.location = CLLocation(latitude: data.latitude, longitude: data.longitude)
-          self.weather = await weatherController.fetchWeather(to: CLLocation(latitude: data.latitude, longitude: data.longitude))
+        if let location = await mapController.convertToCLLocation(completion) {
+          self.weather = await weatherController.fetchWeather(to: location)
+          if let placemark = await mapController.convertToCLPlacemark(location), let locality = placemark.locality {
+            self.data = DataModel(city: locality, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+          }
         }
+      }
+        // Data provided by SwiftData
+      if let data = self.data, let location = data.getLocation() {
+        self.weather = await weatherController.fetchWeather(to: location)
       }
     }
     .navigationBarBackButtonHidden(true)
