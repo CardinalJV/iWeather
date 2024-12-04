@@ -22,7 +22,7 @@ final class DataModel: Identifiable {
     self.longitude = longitude
   }
   
-  func getLocation() -> CLLocation {
+  func getLocation() -> CLLocation? {
     return CLLocation(latitude: self.latitude, longitude: self.longitude)
   }
 }
