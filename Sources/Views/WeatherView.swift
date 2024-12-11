@@ -6,13 +6,11 @@
   //
 
 import SwiftUI
-import CoreLocation
 import WeatherKit
 import MapKit
 
 struct WeatherView: View {
     // MARK: - @Environment variables
-  @Environment(LocationController.self) private var locationController
   @Environment(WeatherController.self) private var weatherController
   @Environment(MapController.self) private var mapController
   @Environment(DataController.self) private var dataController
@@ -55,7 +53,7 @@ struct WeatherView: View {
           .background(.clear)
           /* - */
           ScrollView{
-            VStack(spacing: 25){
+            VStack(spacing: 40){
               WeatherLocation(weather: weather)
               WeatherForecast(weather: weather)
               Spacer()
