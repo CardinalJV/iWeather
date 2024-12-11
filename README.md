@@ -10,6 +10,9 @@
   <img src="https://raw.githubusercontent.com/CardinalJV/CardinalJV/main/assets/logo-swift/mapkit-96x96_2x.png" alt="Logo MapKit" title="MapKit" width="75" height="75"/></a>
 
 # iWeather - In progress 🛠️
+
 A weather app built with SwiftUI and WeatherKit.
+
+## ScreenCast
 
 https://github.com/user-attachments/assets/71e23dd8-ad38-4d6d-93cc-14a24363546e
