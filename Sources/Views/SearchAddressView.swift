@@ -6,9 +6,6 @@
   //
 
 import SwiftUI
-import CoreLocation
-import WeatherKit
-import MapKit
 
 struct SearchAdressView: View {
     // MARK: - @Environment variables
