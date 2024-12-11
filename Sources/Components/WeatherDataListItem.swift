@@ -23,7 +23,7 @@ struct WeatherDataListItem: View {
         HStack{
             Text(weather.currentWeather.getIconFromCondition())
               .font(.system(size: 60))
-              .shadow(color: .black.opacity(0.5), radius: 50)
+              .shadow(color: .black.opacity(0.5), radius: 10)
           Text(weather.currentWeather.getRoundedApparentTemperature() + "°")
             .font(.largeTitle)
             .foregroundStyle(.white)
