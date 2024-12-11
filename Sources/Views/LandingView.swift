@@ -7,43 +7,54 @@
 
 import SwiftUI
 import WeatherKit
-import CoreLocation
 
 struct LandingView: View {
-// MARK: - @Environment variables
+    // MARK: - @Environment variables
   @Environment(LocationController.self) private var locationController
   @Environment(WeatherController.self) private var weatherController
-  @Environment(MapController.self) private var mapController
   @Environment(DataController.self) private var dataController
   @Environment(\.modelContext) private var context
-// MARK: - @State variables
-  @State private var showSearchAdressView = false
+    // MARK: - @State variables
+  @State private var showSearchAddressView = false
   @State private var weather: Weather? = nil
   @State private var showAnimation = false
-// MARK: - Body
+    // MARK: - Body
   var body: some View {
     NavigationStack{
       ZStack{
-        if self.showAnimation, let weather = self.weather {
+        if let weather = self.weather {
+          /* Background */
           Rectangle()
             .fill(weather.currentWeather.getColorGradientFromTemperatureInVertical())
             .ignoresSafeArea()
-          VStack {
+          /* - */
+          VStack(spacing: 20){
+            /* Weather at user location */
             NavigationLink {
               WeatherView(weather: weather)
             } label: {
-              WeatherLocation(weather: weather)
-                .foregroundStyle(.black)
+              if self.showAnimation {
+                WeatherLocation(weather: weather)
+                  .foregroundStyle(.black)
+                  .transition(.scale)
+              }
             }
-            .transition(.scale)
+            /* - */
             Spacer()
+            /* Weather of local data */
             WeatherDataList()
+            /* - */
             Spacer()
+          }
+          .onAppear{
+            withAnimation(.smooth.delay(1)){
+              self.showAnimation = true
+            }
           }
           .frame(width: 375)
           .overlay(alignment: .bottom){
             Button {
-              self.showSearchAdressView = true
+              self.showSearchAddressView = true
             } label: {
               Image(systemName: "plus")
                 .font(.largeTitle)
@@ -54,17 +65,15 @@ struct LandingView: View {
         }
       }
       .fontDesign(.rounded)
-      .sheet(isPresented: self.$showSearchAdressView, content: {
-        SearchAdressView()
+      .sheet(isPresented: self.$showSearchAddressView, content: {
+        SearchAddressView()
       })
+        // Fetch local data and request user location
       .onAppear{
-        withAnimation(.smooth.delay(1)){
-          self.showAnimation = true
-        }
         locationController.requestLocation()
         dataController.context = self.context
-        dataController.fetchData()
       }
+        // Request weather at user location
       .onChange(of: locationController.userLocation) {
         Task {
           if let userLocation = locationController.userLocation {
@@ -77,7 +86,7 @@ struct LandingView: View {
     }
   }
 }
-// MARK: - Preview
+  // MARK: - Preview
 #Preview {
   @Previewable @State var locationController = LocationController()
   @Previewable @State var mapController = MapController()
