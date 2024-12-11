@@ -7,10 +7,8 @@
 
 import SwiftUI
 
-struct SearchAdressView: View {
+struct SearchAddressView: View {
     // MARK: - @Environment variables
-  @Environment(LocationController.self) private var locationController
-  @Environment(WeatherController.self) private var weatherController
   @Environment(MapController.self) private var mapController
   @Environment(\.dismiss) private var dismiss
     // MARK: - @State variables
