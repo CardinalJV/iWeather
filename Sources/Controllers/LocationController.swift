@@ -5,7 +5,6 @@
 //  Created by Jessy Viranaiken on 15/11/2024.
 //
 
-import Foundation
 import CoreLocation
 
 @Observable
