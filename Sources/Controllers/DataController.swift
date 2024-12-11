@@ -5,8 +5,8 @@
   //  Created by Jessy Viranaiken on 19/11/2024.
   //
 
-import Foundation
 import SwiftData
+import SwiftUI
 
 @Observable
 final class DataController {
@@ -38,7 +38,7 @@ final class DataController {
     }
     let request = FetchDescriptor<DataModel>()
     do {
-      self.datas = try context.fetch(request)
+        self.datas = try context.fetch(request)
     } catch {
       print("Error during fetching data: \(error.localizedDescription)")
     }
