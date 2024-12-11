@@ -5,9 +5,7 @@
 //  Created by Jessy Viranaiken on 15/11/2024.
 //
 
-import Foundation
 import MapKit
-import SwiftUI
 
 @Observable
 final class MapController {
@@ -17,6 +15,9 @@ final class MapController {
   var query: String = "" {
     didSet{
       self.localSearchCompleter.queryFragment = query
+      if self.localSearchCompleter.results != self.localSearchCompletions {
+        self.localSearchCompletions = self.localSearchCompleter.results
+      }
     }
   }
   
@@ -29,18 +30,6 @@ final class MapController {
   private func setupSearchCompleter() {
     self.localSearchCompleter.resultTypes = .address
     self.localSearchCompleter.region = MKCoordinateRegion(.world)
-    
-    DispatchQueue.main.async {
-      self.observeResults()
-    }
-  }
-  
-  private func observeResults() {
-    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-      if self.localSearchCompleter.results != self.localSearchCompletions {
-        self.localSearchCompletions = self.localSearchCompleter.results
-      }
-    }
   }
   
   func convertToCLLocation(_ completion: MKLocalSearchCompletion) async -> CLLocation? {
@@ -64,7 +53,7 @@ final class MapController {
       let placemark = localSearch.first
       return placemark
     } catch {
-      print("Error during conversions: \(error.localizedDescription)")
+      print("Error during convertions: \(error.localizedDescription)")
       return nil
     }
   }
