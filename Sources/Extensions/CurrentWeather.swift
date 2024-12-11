@@ -5,7 +5,6 @@
   //  Created by Jessy Viranaiken on 14/11/2024.
   //
 
-import Foundation
 import WeatherKit
 import SwiftUI
 
@@ -22,7 +21,7 @@ extension CurrentWeather {
       case .rain, .heavyRain: return "🌧️"
       case .snow, .heavySnow: return "🌨️"
       case .freezingDrizzle, .freezingRain: return "❄️"
-      case .tropicalStorm, .hurricane: return "🌪️"
+      case .tropicalStorm, .hurricane, .isolatedThunderstorms: return "🌪️"
       case .hot: return "🔥"
       default: return "❓"
     }
@@ -64,5 +63,18 @@ extension CurrentWeather {
   
   func getRoundedHumidityRate() -> String {
     return String(format: "%.0f", self.humidity)
+  }
+  
+  func getRoundedPressure() -> String {
+    return String(format: "%.0f", self.pressure.value)
+  }
+  
+  func getIconFromPressure() -> String {
+    switch self.pressureTrend {
+      case .falling: return "arrow.down.app.fill"
+      case .steady: return "arrow.down.and.line.horizontal.and.arrow.up"
+      case .rising: return "arrow.up.square.fill"
+      default: return "?"
+    }
   }
 }
