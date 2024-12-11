@@ -18,7 +18,7 @@ struct WeatherForecast: View {
     VStack(spacing: 25){
       /* Weather forecast by hours */
       VStack{
-        Text("Weather forecast by hours")
+        Text("Forecast by hours")
           .bold()
         Divider()
         ScrollView(.horizontal){
@@ -37,13 +37,13 @@ struct WeatherForecast: View {
           }
         }
         .scrollIndicators(.hidden)
-        .frame(height: 80)
+        .frame(height: 90)
       }
       .frame(width: 350)
       /* - */
       /* Weather forecast for next days */
       VStack{
-        Text("Weather forecast for next days")
+        Text("Forecast for next days")
           .bold()
         Divider()
         ForEach(self.weather.dailyForecast.forecast.prefix(7), id: \.date) { daily in
@@ -56,21 +56,19 @@ struct WeatherForecast: View {
             Image(systemName: daily.symbolName)
               .font(.title3)
             Spacer()
-            Text("\(daily.getRoundedLowTemperature()) - \(daily.getRoundedHighTemperature())")
-              .font(.title3)
-              .frame(minWidth: 100, alignment: .trailing)
+            HStack{
+              Text(daily.getRoundedLowTemperature())
+                .font(.title3)
+                .frame(minWidth: 32.5, alignment: .trailing)
+              Image(systemName: "arrow.left.and.line.vertical.and.arrow.right")
+              Text(daily.getRoundedHighTemperature())
+                .font(.title3)
+                .frame(minWidth: 32.5, alignment: .trailing)
+            }
           }
         }
       }
       .frame(width: 350)
-      /* - */
-      /* Air quality */
-        //      VStack{
-        //        Text("Air quality")
-        //        Divider()
-        //          //        Text(self.weather)
-        //      }
-        //      .frame(width: 350)
       /* - */
       /* Wind */
       if let wind = self.wind {
@@ -84,12 +82,10 @@ struct WeatherForecast: View {
                 Text("Wind Speed:")
                 Text(wind.getRoundedSpeed())
               }
-              
               HStack{
                 Text("Wind Direction:")
                 Text(wind.compassDirection.abbreviation)
               }
-              
               HStack{
                 Text("Degrees:")
                 Text(wind.getRoundedDegree() + "°")
@@ -101,6 +97,26 @@ struct WeatherForecast: View {
         }
         .frame(width: 350)
       }
+      /* - */
+      /* Pressure */
+      VStack{
+        Text("Pressure")
+          .bold()
+        Divider()
+        HStack{
+            Image(systemName: self.weather.currentWeather.getIconFromPressure())
+              .font(.system(size: 50))
+              .symbolEffect(.wiggle, options: .speed(0.5))
+          Spacer()
+          VStack(alignment: .leading){
+            Text("The pressure is \(self.weather.currentWeather.pressureTrend).")
+            Text("\(self.weather.currentWeather.getRoundedPressure()) mbar")
+              .bold()
+          }
+        }
+        .padding()
+      }
+      .frame(width: 350)
       /* - */
     }
     .onAppear {
