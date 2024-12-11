@@ -5,7 +5,6 @@
 //  Created by Jessy Viranaiken on 14/11/2024.
 //
 
-import Foundation
 import WeatherKit
 import CoreLocation
 
