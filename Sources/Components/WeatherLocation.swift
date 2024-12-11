@@ -11,17 +11,15 @@ import CoreLocation
 
 struct WeatherLocation: View {
   
-  @Environment(LocationController.self) private var locationController
   @Environment(MapController.self) private var mapController
   
   let weather: Weather?
   
-  @State private var showAnimation = false
   @State var placemark: CLPlacemark? = nil
   
   var body: some View {
     ZStack{
-      if /*self.showAnimation, */let weather = self.weather {
+      if let weather = self.weather {
         VStack{
           if let locality = self.placemark?.locality {
             Text(locality)
@@ -34,15 +32,22 @@ struct WeatherLocation: View {
           Text(weather.currentWeather.getRoundedApparentTemperature() + "°")
             .font(.title2)
             .bold()
-          Text(weather.currentWeather.condition.description)
-            .font(.title2)
-            .frame(width: 375)
+          HStack{
+            Text(weather.currentWeather.condition.description)
+              .font(.title2)
+            Divider()
+              .padding(1)
+              .background(.black)
+              .frame(height: 30)
+              .clipShape(RoundedRectangle(cornerRadius: 10))
+            Image(systemName: weather.currentWeather.isDaylight ? "sun.max.fill" : "moon.fill")
+              .font(.title2)
+          }
         }
-//        .transition(.scale)
         .task {
           if let location = self.weather?.currentWeather.metadata.location {
             self.placemark = await mapController.convertToCLPlacemark(location)
-          }
+          } 
         }
       } else {
         ProgressView()
@@ -50,11 +55,6 @@ struct WeatherLocation: View {
       }
     }
     .frame(minHeight: 200)
-//    .onAppear{
-//      withAnimation(.smooth.delay(1)){
-//        self.showAnimation = true
-//      }
-//    }
   }
 }
 
