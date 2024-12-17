@@ -12,7 +12,6 @@ struct Compass: View {
   @State var direction: Double
   let roundedRectangleOffset: Double = 45
   let textOffset: CGFloat = 37.5
-  @State private var showAnimation = false
   
   func rotateCompass() {
     var sum = 0.0
@@ -82,22 +81,8 @@ struct Compass: View {
   }
 }
 
-
-#Preview {
-  @Previewable @State var locationController = LocationController()
-  @Previewable @State var mapController = MapController()
-  @Previewable @State var weatherController = WeatherController()
-  @Previewable @State var dataController = DataController()
-  LandingView()
-    .modelContainer(for: DataModel.self)
-    .environment(locationController)
-    .environment(mapController)
-    .environment(weatherController)
-    .environment(dataController)
-}
-
   //#Preview {
-  //  CustomArrow(direction: 135)
+  //  Compass()
   //}
 
 
