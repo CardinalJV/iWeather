@@ -17,6 +17,7 @@ final class WeatherController {
     do {
       return try await self.weatherService.weather(for: location)
     } catch {
+      print("Error during fetching weather: \(error.localizedDescription)")
       return nil
     }
   }
