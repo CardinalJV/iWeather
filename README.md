@@ -11,7 +11,7 @@
 
 # iWeather
 
-Une app météo build avec SwiftUI, SwiftData, WeatherKit and MapKit.
+Une app météo build avec SwiftUI, SwiftData, WeatherKit et MapKit.
 
 ## ScreenCast
 
