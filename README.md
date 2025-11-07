@@ -11,27 +11,27 @@
 
 # iWeather
 
-Une app météo build avec SwiftUI, SwiftData, WeatherKit et MapKit.
+A weather app built with SwiftUI, SwiftData, WeatherKit and MapKit.
 
 ## ScreenCast
 
 https://github.com/user-attachments/assets/71e23dd8-ad38-4d6d-93cc-14a24363546e
 
-## Fonctionnalités principales 
+## Main features 
 
-- Obtenir des données météo en temps réel
+- Get real-time weather data
   
-Les utilisateurs peuvent rechercher des lieux via un champ de recherche afin de pouvoir connaître la météo à ces lieux en temps réel.
+Users can search for locations via a search field to find out the weather at those locations in real time.
 
-- Enregistrement en favoris
+- Save to favorites
   
-Il est possible d'enregistrer les villes recherchées en local grâce au bouton Favoris. Dès que l'application s'ouvre, la météo sera mise à jour en temps réel pour les lieux enregistrés.
+You can save your searched cities locally using the Favorites button. As soon as the application opens, the weather will be updated in real time for the saved locations.
 
-- Obtenir la météo à son emplacement
+- Get the weather at your location
   
-Si l'utilisateur accepte, l'application récupère sa localisation afin de lui donner la météo à son emplacement.
+If the user agrees, the application retrieves their location in order to provide them with the weather at their location.
 
-## Détails techniques
+## Technical details
 
 - Langages : Swift
 - Frameworks : SwiftUI / SwiftData
@@ -41,4 +41,4 @@ Si l'utilisateur accepte, l'application récupère sa localisation afin de lui d
 
 ## Installation 
 
-Clonez le projet depuis le dépôt GitHub, puis ouvrez-le dans Xcode. Assurez-vous que vous utilisez la dernière version de Xcode compatible avec Swift 5, SwiftUI et SwiftData pour éviter tout problème de compatibilité.
+Clone the project from the GitHub repository, then open it in Xcode. Make sure you're using the latest version of Xcode that's compatible with Swift 5, SwiftUI, and SwiftData to avoid any compatibility issues.
