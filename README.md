@@ -13,9 +13,9 @@
 
 A weather app built with SwiftUI, SwiftData, WeatherKit and MapKit.
 
-## ScreenCast
+## Screenrecord
 
-https://github.com/user-attachments/assets/71e23dd8-ad38-4d6d-93cc-14a24363546e
+https://github.com/user-attachments/assets/9fde58fa-3a47-43f4-aa29-9a81f641b8fb
 
 ## Main features 
 
